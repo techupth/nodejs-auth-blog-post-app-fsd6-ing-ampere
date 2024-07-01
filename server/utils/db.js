@@ -1,4 +1,5 @@
 import { MongoClient } from "mongodb";
+import 'dotenv/config'
 
 const connectionString = "mongodb://localhost:27017";
 
