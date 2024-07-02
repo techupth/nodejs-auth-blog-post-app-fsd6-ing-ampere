@@ -11,8 +11,8 @@ authRouter.post("/register", async (req, res) => {
   const user = {
     username: req.body.username,
     password: req.body.password,
-    firstName: req.body.firstname,
-    lastName: req.body.lastname,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
   };
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);
@@ -32,14 +32,20 @@ authRouter.post("/login", async (req, res) => {
     username: req.body.username,
   });
 
+  if (!user) {
+    return res.status(404).json({
+      message: "user not found",
+    });
+  }
+
   const isValidPassword = await bcrypt.compare(
     req.body.password,
     user.password
   );
 
-  if (!user || !isValidPassword) {
+  if (!isValidPassword) {
     return res.status(401).json({
-      message: "Invalid username or password",
+      message: "password not valid",
     });
   }
 
