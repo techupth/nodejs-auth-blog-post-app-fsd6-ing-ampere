@@ -2,7 +2,7 @@ import { Router } from "express";
 import { db } from "../utils/db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import "dotenv/config";
+
 
 const authRouter = Router();
 const collection = db.collection("users");
@@ -21,6 +21,7 @@ authRouter.post("/register", async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   newUser.password = await bcrypt.hash(newUser.password, salt);
 
+  const collection = db.collection("users")
   await collection.insertOne(newUser);
 
   return res.json({
